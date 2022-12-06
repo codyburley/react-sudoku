@@ -1,0 +1,34 @@
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/fonts' as *;
+
+.nav {
+  background-color: var(--bg-body);
+  color: var(--color-text);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 5px 2px var(--bg-main);
+  z-index: 2;
+
+  &__container {
+    max-width: 1280px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4rem;
+    height: 7rem;
+  }
+
+  &__logo {
+    @include font-large;
+    color: var(--blue);
+  }
+
+  &__toggle {
+    color: var(--blue);
+    @include font-large;
+    cursor: pointer;
+  }
+}
