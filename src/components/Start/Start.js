@@ -28,7 +28,7 @@ const Start = ({ game }) => {
   }
 
   return (
-    <div className='start start--active'>
+    <div className='start '>
       <input type="text" className={`start__name ${!error ? '' : ' start__name-error'}`} placeholder='Your Name' maxLength='11' onChange={e => setName(e.target.value)} />
       <div className="start__button" onClick={handleLevelClick}>Easy</div>
       {!game ? '' : <div className="start__button">Continue</div>}

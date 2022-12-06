@@ -51,3 +51,7 @@ ul {
   --filled-color: #4f4f63;
   --filled-bg: #000;
 }
+
+.active {
+  transform: translateX(0);
+}
