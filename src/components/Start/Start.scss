@@ -1,0 +1,80 @@
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/fonts' as *;
+
+@keyframes bounce {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(2rem);
+  }
+
+  50% {
+    transform: translateX(-2rem);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+
+}
+
+.start {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-100%);
+  transition: transform .3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &--active {
+    transform: translateX(0);
+  }
+
+  &>*+* {
+    margin-top: 2rem;
+  }
+
+  &__name {
+    height: 8rem;
+    width: 28rem;
+    border-radius: 10px;
+    outline: 0;
+    background-color: var(--bg-main);
+    padding: 2rem;
+    @include font-large;
+    text-align: center;
+    @include input-style;
+
+    &-error {
+      border-color: var(--red);
+      animation: bounce .5s cubic-bezier(.175, .885, 0.32, 1.275);
+    }
+  }
+
+  &__button {
+    height: 8rem;
+    width: 28rem;
+    background-color: var(--bg-main);
+    color: var(--color-text);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    transition: width .3s ease-in-out;
+    overflow: hidden;
+    @include font-large;
+    cursor: pointer;
+
+    &--blue {
+      background-color: var(--blue);
+      color: var(--white);
+    }
+  }
+}

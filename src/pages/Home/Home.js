@@ -1,9 +1,12 @@
 import React from 'react'
+import Screen from '../../components/Screen/Screen'
 import './Home.scss'
 
-const Home = () => {
+const Home = ({ game }) => {
   return (
-    <div>Home</div>
+    <div className='home'>
+      <Screen game={game} />
+    </div>
   )
 }
 
