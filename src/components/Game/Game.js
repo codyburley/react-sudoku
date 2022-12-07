@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import './Game.scss';
 import { CONSTANT } from '../../constant';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GameClock from '../GameClock/GameClock';
 
 const Game = ({ playerName, activeScreen, pause, setPause, setActiveScreen }) => {
-  const [clockSeconds, setClockSeconds] = useState(0);
-  const [clock, setClock] = useState('');
 
   const renderCells = () => {
     let cells = [];
@@ -20,8 +17,6 @@ const Game = ({ playerName, activeScreen, pause, setPause, setActiveScreen }) =>
     }
     return cells;
   };
-
-  const formatClock = (c) => new Date(c * 1000).toISOString.substr(11, 8);
 
   return (
     <div className={`game ${activeScreen === 'game' ? ' current' : ''}`}>

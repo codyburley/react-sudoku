@@ -11,7 +11,6 @@ const Start = ({ game, setPlayerName, playerName, activeScreen, setActiveScreen,
 
   const handleClick = () => {
     if (playerName.trim().length > 0) {
-      setError(false);
       setActiveScreen('game');
       setPause(true);
     } else {

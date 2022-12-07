@@ -9,7 +9,7 @@ const Nav = ({ switchTheme }) => {
   return (
     <nav className='nav'>
       <div className="nav__container">
-        <a href='#' className='nav__logo'>Sudoku</a>
+        <a href='/' className='nav__logo'>Sudoku</a>
         <div className='nav__toggle'>
           <input
             type="checkbox"
