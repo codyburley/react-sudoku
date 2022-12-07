@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Game.scss';
 import { CONSTANT } from '../../constant';
+import { faPause } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GameClock from '../GameClock/GameClock';
 
-const Game = () => {
+const Game = ({ playerName, activeScreen, pause, setPause }) => {
+  const [clockSeconds, setClockSeconds] = useState(0);
+  const [clock, setClock] = useState('');
+
   const renderCells = () => {
     let cells = [];
     for (let i = 0; i < 81; i++) {
@@ -13,12 +19,43 @@ const Game = () => {
       else cells.push(<div className='game__cell' key={i}></div>)
     }
     return cells;
-  }
+  };
+
+  const formatClock = (c) => new Date(c * 1000).toISOString.substr(11, 8);
 
   return (
-    <div className='game current'>
+    <div className={`game ${!activeScreen ? '' : ' current'}`}>
       <div className="game__grid">
         {renderCells()}
+      </div>
+      <div className="game__info">
+        <div className="game__info-container game__info-container--name">
+          <span className='game__player-name'>{playerName}</span>
+        </div>
+        <div className="game__info-container game__info-container--level">
+          <span className='game__level'>Inhuman</span>
+        </div>
+      </div>
+      <div className="game__info-container game__info-container--time">
+        <GameClock
+          pause={pause}
+          setPause={setPause}
+        />
+        <button className="game__pause" onClick={() => setPause(false)}>
+          <FontAwesomeIcon icon={faPause} />
+        </button>
+      </div>
+      <div className="game__number-container">
+        <div className="game__number">1</div>
+        <div className="game__number">2</div>
+        <div className="game__number">3</div>
+        <div className="game__number">4</div>
+        <div className="game__number">5</div>
+        <div className="game__number">6</div>
+        <div className="game__number">7</div>
+        <div className="game__number">8</div>
+        <div className="game__number">9</div>
+        <button className="game__number game__number--delete">X</button>
       </div>
     </div>
   )

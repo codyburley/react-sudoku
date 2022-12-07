@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import './Start.scss';
 import { CONSTANT } from '../../constant';
 
-const Start = ({ game }) => {
-  const [name, setName] = useState('');
+const Start = ({ game, setPlayerName, playerName, activeScreen, setActiveScreen, setPause }) => {
+
   const [error, setError] = useState(false);
 
   let level_index = 0;
   let level = CONSTANT.LEVEL[level_index]
 
   const handleClick = () => {
-    if (name.trim().length > 0) {
+    if (playerName.trim().length > 0) {
       setError(false);
-      alert(`level => ${level}`)
+      setActiveScreen(true);
+      setPause(true);
     } else {
       setError(true);
       setTimeout(() => {
@@ -28,11 +29,11 @@ const Start = ({ game }) => {
   }
 
   return (
-    <div className='start '>
-      <input type="text" className={`start__name ${!error ? '' : ' start__name-error'}`} placeholder='Your Name' maxLength='11' onChange={e => setName(e.target.value)} />
-      <div className="start__button" onClick={handleLevelClick}>Easy</div>
-      {!game ? '' : <div className="start__button">Continue</div>}
-      <div className="start__button start__button--blue" onClick={e => handleClick(e)}>New Game</div>
+    <div className={`start ${activeScreen ? '' : ' current'}`}>
+      <input type="text" className={`start__name ${!error ? '' : ' start__name-error'}`} placeholder='Your Name' maxLength='11' onChange={e => setPlayerName(e.target.value)} />
+      <button className="start__button" onClick={handleLevelClick}>Easy</button>
+      {!game ? '' : <button className="start__button">Continue</button>}
+      <button className="start__button start__button--blue" onClick={handleClick}>New Game</button>
     </div>
   )
 }
