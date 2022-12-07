@@ -5,7 +5,7 @@ import { faPause } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GameClock from '../GameClock/GameClock';
 
-const Game = ({ playerName, activeScreen, pause, setPause }) => {
+const Game = ({ playerName, activeScreen, pause, setPause, setActiveScreen }) => {
   const [clockSeconds, setClockSeconds] = useState(0);
   const [clock, setClock] = useState('');
 
@@ -24,7 +24,7 @@ const Game = ({ playerName, activeScreen, pause, setPause }) => {
   const formatClock = (c) => new Date(c * 1000).toISOString.substr(11, 8);
 
   return (
-    <div className={`game ${!activeScreen ? '' : ' current'}`}>
+    <div className={`game ${activeScreen === 'game' ? ' current' : ''}`}>
       <div className="game__grid">
         {renderCells()}
       </div>
@@ -39,9 +39,8 @@ const Game = ({ playerName, activeScreen, pause, setPause }) => {
       <div className="game__info-container game__info-container--time">
         <GameClock
           pause={pause}
-          setPause={setPause}
         />
-        <button className="game__pause" onClick={() => setPause(false)}>
+        <button className="game__pause" onClick={() => { setPause(false); setActiveScreen('pause') }}>
           <FontAwesomeIcon icon={faPause} />
         </button>
       </div>

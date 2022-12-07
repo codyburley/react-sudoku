@@ -1,5 +1,6 @@
 @use "./variables" as *;
 
+
 @mixin tablet {
   @media (min-width: $breakpoint-tablet) {
     @content;
@@ -31,4 +32,17 @@
   :focus {
     border-color: var(--blue);
   }
+}
+
+@mixin button-style {
+  height: 8rem;
+  width: 28rem;
+  background-color: var(--bg-main);
+  color: var(--color-text);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  transition: width .3s ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
 }

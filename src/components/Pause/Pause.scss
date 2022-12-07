@@ -2,26 +2,18 @@
 @use '../../styles/partials/mixins' as *;
 @use '../../styles/partials/fonts' as *;
 
-@keyframes bounce {
+@keyframes zoom-in {
   0% {
-    transform: translateX(0);
-  }
-
-  25% {
-    transform: translateX(2rem);
-  }
-
-  50% {
-    transform: translateX(-2rem);
+    transform: scale(3);
   }
 
   100% {
-    transform: translateX(0);
+    transform: scale(1);
   }
-
 }
 
-.start {
+.pause {
+  background-color: var(--bg-body);
   position: absolute;
   top: 0;
   left: 0;
@@ -38,26 +30,10 @@
     margin-top: 2rem;
   }
 
-  &__name {
-    height: 8rem;
-    width: 28rem;
-    border-radius: 10px;
-    outline: 0;
-    background-color: var(--bg-main);
-    padding: 2rem;
-    @include font-large;
-    text-align: center;
-    @include input-style;
-
-    &-error {
-      border-color: var(--red);
-      animation: bounce .5s cubic-bezier(.175, .885, 0.32, 1.275);
-    }
-  }
-
   &__button {
     @include button-style;
     @include font-large;
+    animation: zoom-in .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     &--blue {
       background-color: var(--blue);

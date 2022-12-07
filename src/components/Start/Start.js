@@ -12,7 +12,7 @@ const Start = ({ game, setPlayerName, playerName, activeScreen, setActiveScreen,
   const handleClick = () => {
     if (playerName.trim().length > 0) {
       setError(false);
-      setActiveScreen(true);
+      setActiveScreen('game');
       setPause(true);
     } else {
       setError(true);
@@ -29,7 +29,7 @@ const Start = ({ game, setPlayerName, playerName, activeScreen, setActiveScreen,
   }
 
   return (
-    <div className={`start ${activeScreen ? '' : ' current'}`}>
+    <div className={`start ${activeScreen === 'start' ? ' current' : ''}`}>
       <input type="text" className={`start__name ${!error ? '' : ' start__name-error'}`} placeholder='Your Name' maxLength='11' onChange={e => setPlayerName(e.target.value)} />
       <button className="start__button" onClick={handleLevelClick}>Easy</button>
       {!game ? '' : <button className="start__button">Continue</button>}
