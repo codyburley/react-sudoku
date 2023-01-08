@@ -1,40 +1,70 @@
-import React, { useState } from 'react';
-import './Start.scss';
-import { CONSTANT } from '../../constant';
+import React, { useEffect, useState } from "react";
+import "./Start.scss";
+import { CONSTANT } from "../../constant";
 
-const Start = ({ game, setPlayerName, playerName, activeScreen, setActiveScreen, setPause }) => {
-
+const Start = ({
+  game,
+  setPlayerName,
+  playerName,
+  activeScreen,
+  setActiveScreen,
+  setPause,
+  initSudoku,
+  levelIndex,
+  level,
+  setLevelIndex,
+  setLevel,
+  initGameGrid,
+  setTime,
+}) => {
   const [error, setError] = useState(false);
-
-  let level_index = 0;
-  let level = CONSTANT.LEVEL[level_index]
 
   const handleClick = () => {
     if (playerName.trim().length > 0) {
-      setActiveScreen('game');
+      setActiveScreen("game");
+      initSudoku();
+      initGameGrid();
       setPause(true);
+      setTime(0);
     } else {
       setError(true);
       setTimeout(() => {
         setError(false);
-      }, 500)
+      }, 500);
     }
-  }
+  };
 
-  const handleLevelClick = (e) => {
-    level_index = level_index + 1 > CONSTANT.LEVEL.length - 1 ? 0 : level_index + 1;
-    level = CONSTANT.LEVEL[level_index];
-    e.target.innerHTML = CONSTANT.LEVEL_NAME[level_index];
-  }
+  const handleLevelClick = () => {
+    setLevelIndex(
+      levelIndex + 1 > CONSTANT.LEVEL.length - 1 ? 0 : levelIndex + 1
+    );
+  };
+
+  useEffect(() => {
+    setLevel(CONSTANT.LEVEL[levelIndex]);
+  }, [levelIndex, setLevel]);
 
   return (
-    <div className={`start ${activeScreen === 'start' ? ' current' : ''}`}>
-      <input type="text" className={`start__name ${!error ? '' : ' start__name-error'}`} placeholder='Your Name' maxLength='11' onChange={e => setPlayerName(e.target.value)} />
-      <button className="start__button" onClick={handleLevelClick}>Easy</button>
-      {!game ? '' : <button className="start__button">Continue</button>}
-      <button className="start__button start__button--blue" onClick={handleClick}>New Game</button>
+    <div className={`start ${activeScreen === "start" ? " current" : ""}`}>
+      <input
+        type="text"
+        className={`start__name ${!error ? "" : " start__name-error"}`}
+        placeholder="Your Name"
+        maxLength="11"
+        onChange={(e) => setPlayerName(e.target.value)}
+      />
+      <button className="start__button" onClick={handleLevelClick}>
+        {CONSTANT.LEVEL_NAME[levelIndex]}
+      </button>
+      {!game ? "" : <button className="start__button">Continue</button>}
+      <button
+        className="start__button start__button--blue"
+        onClick={handleClick}
+      >
+        New Game
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default Start
+export default Start;

@@ -1,6 +1,6 @@
-@use '../../styles/partials/variables' as *;
-@use '../../styles/partials/mixins' as *;
-@use '../../styles/partials/fonts' as *;
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/fonts" as *;
 
 .game {
   display: flex;
@@ -9,7 +9,7 @@
   justify-content: space-between;
   padding: 3rem 0;
   transform: translateX(100%);
-  transition: transform .3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 
   &__grid {
     display: grid;
@@ -49,7 +49,7 @@
       border: 2px solid var(--blue);
     }
 
-    &__hover {
+    &--hover {
       border: 3px solid var(--blue);
     }
 
@@ -63,7 +63,7 @@
     margin: 2rem 0 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem,
+    gap: 1rem;
   }
 
   &__info-container {

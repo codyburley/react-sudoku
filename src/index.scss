@@ -1,5 +1,5 @@
-@use './styles/partials/variables' as *;
-@use './styles/partials/fonts' as *;
+@use "./styles/partials/variables" as *;
+@use "./styles/partials/fonts" as *;
 
 *,
 *::before,
@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  font-family: 'Sen', sans-serif;
+  font-family: "Sen", sans-serif;
   height: 100vh;
   overflow-x: hidden;
   user-select: none;
@@ -54,7 +54,7 @@ button {
   --black: #000;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --bg-main: #2a2a38;
   --bg-body: #1a1a2e;
   --color-text: #6a6a6a;

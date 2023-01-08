@@ -1,9 +1,7 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React from "react";
+import { useEffect } from "react";
 
-const GameClock = ({ pause }) => {
-  const [time, setTime] = useState(0);
-
+const GameClock = ({ pause, time, setTime }) => {
   useEffect(() => {
     let interval;
     if (pause) {
@@ -14,7 +12,7 @@ const GameClock = ({ pause }) => {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [pause]);
+  }, [pause, setTime]);
 
   return (
     <div>
@@ -23,7 +21,7 @@ const GameClock = ({ pause }) => {
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GameClock
+export default GameClock;
