@@ -76,7 +76,7 @@ const shuffleArray = (arr) => {
   return arr;
 };
 
-// Check is puzzle is completed
+// Check if puzzle is completed
 const isComplete = (grid) => {
   return grid.every((row, i) => {
     return row.every((value, j) => {
@@ -117,29 +117,31 @@ const sudokuCreate = (grid) => {
   return isComplete(grid);
 };
 
-const sudokuCheck = (grid) => {
-  let unassignedPos = {
-    row: -1,
-    col: -1,
-  };
+export const sudokuCheck = (board) => {
+  if (isComplete(board)) {
+    let set = new Set();
 
-  if (!findUnassignedPos(grid, unassignedPos)) return true;
-
-  grid.forEach((row, i) => {
-    row.forEach((num, j) => {
-      if (isSafe(grid, i, j, num)) {
-        if (isComplete(grid)) {
-          return true;
-        } else {
-          if (sudokuCreate(grid)) {
-            return true;
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        const value = board[i][j];
+        if (value !== 0) {
+          const row = `${value} at row ${i}`;
+          const column = `${value} at column ${j}`;
+          const box = `${value} at box ${Math.floor(i / 3)}, ${Math.floor(
+            j / 3
+          )}`;
+          if (set.has(row) || set.has(column) || set.has(box)) {
+            return false;
+          } else {
+            set.add(row);
+            set.add(column);
+            set.add(box);
           }
         }
       }
-    });
-  });
-
-  return isComplete(grid);
+    }
+    return true;
+  }
 };
 
 const rand = () => Math.floor(Math.random() * CONSTANT.GRID_SIZE);

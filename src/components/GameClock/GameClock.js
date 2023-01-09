@@ -1,19 +1,6 @@
 import React from "react";
-import { useEffect } from "react";
 
-const GameClock = ({ pause, time, setTime }) => {
-  useEffect(() => {
-    let interval;
-    if (pause) {
-      interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 10);
-      }, 10);
-    } else if (!pause) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [pause, setTime]);
-
+const GameClock = ({ time }) => {
   return (
     <div>
       <div>

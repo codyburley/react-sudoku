@@ -3,8 +3,6 @@ import { CONSTANT } from "../../constant";
 import { faPause } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GameClock from "../GameClock/GameClock";
-import { sudokuGen } from "../../sudoku";
-// import { useEffect } from "react";
 
 const Game = ({
   playerName,
@@ -12,10 +10,7 @@ const Game = ({
   pause,
   setPause,
   setActiveScreen,
-  su,
-  level,
   levelIndex,
-  cells,
   time,
   setTime,
 }) => {
@@ -134,7 +129,7 @@ const Game = ({
         <div className="game__number">7</div>
         <div className="game__number">8</div>
         <div className="game__number">9</div>
-        <button className="game__number game__number--delete">X</button>
+        <button className="game__delete">X</button>
       </div>
     </div>
   );

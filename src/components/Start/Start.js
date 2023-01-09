@@ -3,7 +3,6 @@ import "./Start.scss";
 import { CONSTANT } from "../../constant";
 
 const Start = ({
-  game,
   setPlayerName,
   playerName,
   activeScreen,
@@ -11,11 +10,11 @@ const Start = ({
   setPause,
   initSudoku,
   levelIndex,
-  level,
   setLevelIndex,
   setLevel,
   initGameGrid,
   setTime,
+  initNumberInputEvent,
 }) => {
   const [error, setError] = useState(false);
 
@@ -24,6 +23,7 @@ const Start = ({
       setActiveScreen("game");
       initSudoku();
       initGameGrid();
+      initNumberInputEvent();
       setPause(true);
       setTime(0);
     } else {
@@ -48,7 +48,7 @@ const Start = ({
     <div className={`start ${activeScreen === "start" ? " current" : ""}`}>
       <input
         type="text"
-        className={`start__name ${!error ? "" : " start__name-error"}`}
+        className={`start__name ${!error ? "" : " start__name--error"}`}
         placeholder="Your Name"
         maxLength="11"
         onChange={(e) => setPlayerName(e.target.value)}
@@ -56,7 +56,6 @@ const Start = ({
       <button className="start__button" onClick={handleLevelClick}>
         {CONSTANT.LEVEL_NAME[levelIndex]}
       </button>
-      {!game ? "" : <button className="start__button">Continue</button>}
       <button
         className="start__button start__button--blue"
         onClick={handleClick}

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Game from "../Game/Game";
 import Pause from "../Pause/Pause";
 import Start from "../Start/Start";
 import "./Screen.scss";
-import { sudokuGen } from "../../sudoku";
+import { sudokuGen, sudokuCheck } from "../../sudoku";
 import { CONSTANT } from "../../constant";
-// import { v4 as uuidv4 } from "uuid";
+import Results from "../Results/Results";
 
 const Screen = () => {
   const [game, setGame] = useState("");
@@ -13,32 +13,16 @@ const Screen = () => {
   const [activeScreen, setActiveScreen] = useState("start");
   const [pause, setPause] = useState(false);
   const [cells, setCells] = useState([]);
+  const [numberInputs, setNumberInputs] = useState([]);
   const [levelIndex, setLevelIndex] = useState(0);
   const [time, setTime] = useState(0);
   const [level, setLevel] = useState(CONSTANT.LEVEL[levelIndex]);
 
-  const getGameInfo = () => JSON.parse(localStorage.getItem("game"));
-
-  // let levelIndex = 0;
-  // let level = CONSTANT.LEVEL[levelIndex];
-
   let selectedCell = -1;
+  let interval = useRef();
 
   let su = undefined;
   let suAnswer = undefined;
-
-  // const renderCells = () => {
-  //   const cellsArr = []
-  //   su = sudokuGen(level);
-  //   for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
-  //     let row = Math.floor(i / CONSTANT.GRID_SIZE);
-  //     let col = i % CONSTANT.GRID_SIZE;
-  //     if (row === 2 || row === 5) cellsArr.push(<div className={`game__cell game__cell--bottom ${su.question[row][col] !== 0 ? ` game__cell--filled` : ''}`} key={uuidv4()} data-value={su.question[row][col]}>{su.question[row][col] !== 0 ? `${su.question[row][col]}` : ''}</div>);
-  //     else if (col === 2 || col === 5) cellsArr.push(<div className={`game__cell game__cell--right ${su.question[row][col] !== 0 ? ` game__cell--filled` : ''}`} key={uuidv4()} data-value={su.question[row][col]}>{su.question[row][col] !== 0 ? `${su.question[row][col]}` : ''}</div>);
-  //     else cellsArr.push(<div className={`game__cell ${su.question[row][col] !== 0 ? ` game__cell--filled` : ''}`} key={uuidv4()} data-value={su.question[row][col]}>{su.question[row][col] !== 0 ? `${su.question[row][col]}` : ''}</div>)
-  //   }
-  //   setCells(cellsArr)
-  // };
 
   const initGameGrid = () => {
     for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
@@ -50,8 +34,10 @@ const Screen = () => {
   };
 
   useEffect(() => {
-    const el = document.querySelectorAll(".game__cell");
-    setCells(el);
+    const cell = document.querySelectorAll(".game__cell");
+    setCells(cell);
+    const numbers = document.querySelectorAll(".game__number");
+    setNumberInputs(numbers);
   }, []);
 
   const clearSudoku = () => {
@@ -66,13 +52,12 @@ const Screen = () => {
     // clear old sudoku
     clearSudoku();
     resetBg();
+    removeErr();
     // generate sudoku puzzle here
     su = sudokuGen(level);
     suAnswer = [...su.question];
 
-    // saveGameInfo();
-
-    // show sudoku to div
+    // populate sudoku grid divs
     for (let i = 0; i < Math.pow(CONSTANT.GRID_SIZE, 2); i++) {
       let row = Math.floor(i / CONSTANT.GRID_SIZE);
       let col = i % CONSTANT.GRID_SIZE;
@@ -89,18 +74,6 @@ const Screen = () => {
 
   const hoverBg = (index) => {
     let row = Math.floor(index / CONSTANT.GRID_SIZE);
-    let col = index % CONSTANT.GRID_SIZE;
-
-    let box_start_row = row - (row % 3);
-    let box_start_col = col - (col % 3);
-
-    for (let i = 0; i < CONSTANT.BOX_SIZE; i++) {
-      for (let j = 0; j < CONSTANT.BOX_SIZE; j++) {
-        let cell = cells[9 * (box_start_row + i) + (box_start_col + j)];
-        //console.log(cell);
-        cell.classList.add("game__cell--hover");
-      }
-    }
 
     let step = 9;
     while (index - step >= 0) {
@@ -131,6 +104,117 @@ const Screen = () => {
     cells.forEach((e) => e.classList.remove("game__cell--hover"));
   };
 
+  const checkErr = (value) => {
+    const addErr = (cell) => {
+      if (parseInt(cell.getAttribute("data-value")) === value) {
+        cell.classList.add("game__cell--error");
+        cell.classList.add("game__cell-err");
+        setTimeout(() => {
+          cell.classList.remove("game__cell-err");
+        }, 500);
+      }
+    };
+
+    let index = selectedCell;
+
+    let row = Math.floor(index / CONSTANT.GRID_SIZE);
+    let col = index % CONSTANT.GRID_SIZE;
+
+    let box_start_row = row - (row % 3);
+    let box_start_col = col - (col % 3);
+
+    for (let i = 0; i < CONSTANT.BOX_SIZE; i++) {
+      for (let j = 0; j < CONSTANT.BOX_SIZE; j++) {
+        let cell = cells[9 * (box_start_row + i) + (box_start_col + j)];
+        if (!cell.classList.contains("game__cell--selected")) addErr(cell);
+      }
+    }
+
+    let step = 9;
+    while (index - step >= 0) {
+      addErr(cells[index - step]);
+      step += 9;
+    }
+
+    step = 9;
+    while (index + step < 81) {
+      addErr(cells[index + step]);
+      step += 9;
+    }
+
+    step = 1;
+    while (index - step >= 9 * row) {
+      addErr(cells[index - step]);
+      step += 1;
+    }
+
+    step = 1;
+    while (index + step < 9 * row + 9) {
+      addErr(cells[index + step]);
+      step += 1;
+    }
+  };
+
+  useEffect(() => {
+    if (pause) {
+      interval.current = setInterval(() => {
+        setTime((prevTime) => prevTime + 10);
+      }, 10);
+    } else if (!pause) {
+      clearInterval(interval.current);
+    }
+    return () => clearInterval(interval.current);
+  }, [pause, setTime]);
+
+  const removeErr = () =>
+    cells.forEach((e) => e.classList.remove("game__cell--error"));
+
+  const isGameWin = () => sudokuCheck(suAnswer);
+
+  const showResult = () => {
+    setPause(false);
+    clearInterval(time);
+    setActiveScreen("results");
+  };
+
+  const initNumberInputEvent = () => {
+    numberInputs.forEach((e, index) => {
+      e.addEventListener("click", () => {
+        if (!cells[selectedCell].classList.contains("game__cell--filled")) {
+          cells[selectedCell].innerHTML = index + 1;
+          cells[selectedCell].setAttribute("data-value", index + 1);
+          // Add to answer
+          let row = Math.floor(selectedCell / CONSTANT.GRID_SIZE);
+          let col = selectedCell % CONSTANT.GRID_SIZE;
+          suAnswer[row][col] = index + 1;
+          removeErr();
+          checkErr(index + 1);
+          cells[selectedCell].classList.add("game__cell-zoom-in");
+          setTimeout(() => {
+            cells[selectedCell].classList.remove("game__cell-zoom-in");
+          }, 500);
+
+          // Check Game win
+          if (isGameWin()) {
+            setGame("");
+            showResult();
+          }
+        }
+      });
+    });
+    document.querySelector(".game__delete").addEventListener("click", () => {
+      cells[selectedCell].innerHTML = "";
+      cells[selectedCell].setAttribute("data-value", 0);
+
+      let row = Math.floor(selectedCell / CONSTANT.GRID_SIZE);
+      let col = selectedCell % CONSTANT.GRID_SIZE;
+
+      suAnswer[row][col] = 0;
+
+      removeErr();
+    });
+  };
+
   const initCellsEvent = () => {
     cells.forEach((e, index) => {
       e.addEventListener("click", () => {
@@ -146,10 +230,6 @@ const Screen = () => {
       });
     });
   };
-
-  useEffect(() => {
-    setGame(getGameInfo());
-  }, []);
 
   return (
     <div className="screen">
@@ -167,6 +247,7 @@ const Screen = () => {
         setLevel={setLevel}
         initGameGrid={initGameGrid}
         setTime={setTime}
+        initNumberInputEvent={initNumberInputEvent}
       />
       <Game
         playerName={playerName}
@@ -185,6 +266,11 @@ const Screen = () => {
       <Pause
         activeScreen={activeScreen}
         setPause={setPause}
+        setActiveScreen={setActiveScreen}
+      />
+      <Results
+        time={time}
+        activeScreen={activeScreen}
         setActiveScreen={setActiveScreen}
       />
     </div>

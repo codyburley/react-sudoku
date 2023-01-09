@@ -11,7 +11,7 @@
   }
 }
 
-.pause {
+.results {
   background-color: var(--bg-body);
   position: absolute;
   top: 0;
@@ -29,15 +29,26 @@
     margin-top: 2rem;
   }
 
+  &__title {
+    @include font-large;
+    color: var(--blue);
+  }
+
+  &__info {
+    @include font-small;
+    color: var(--color-text);
+  }
+
+  &__time {
+    @extend .results__info;
+  }
+
   &__button {
     @include button-style;
     @include font-large;
     animation: zoom-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-    &--blue {
-      background-color: var(--blue);
-      color: var(--white);
-    }
+    background-color: var(--blue);
+    color: var(--white);
   }
 }
 
