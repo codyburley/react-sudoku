@@ -45,10 +45,14 @@
 
   &__button {
     @include button-style;
-    @include font-large;
+    @include font-medium;
     animation: zoom-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background-color: var(--blue);
     color: var(--white);
+
+    @include tablet {
+      @include font-large;
+    }
   }
 }
 
