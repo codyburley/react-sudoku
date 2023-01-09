@@ -31,8 +31,12 @@
 
   &__button {
     @include button-style;
-    @include font-large;
     animation: zoom-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @include font-medium;
+
+    @include tablet {
+      @include font-large;
+    }
 
     &--blue {
       background-color: var(--blue);

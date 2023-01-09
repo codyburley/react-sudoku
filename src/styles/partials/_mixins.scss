@@ -1,5 +1,11 @@
 @use "./variables" as *;
 
+@mixin mobile-large {
+  @media (min-width: $breakpoint-mobile-large) {
+    @content;
+  }
+}
+
 @mixin tablet {
   @media (min-width: $breakpoint-tablet) {
     @content;
@@ -12,15 +18,19 @@
   }
 }
 
-@mixin mobile {
-  @media screen and (max-width: $breakpoint-mobile) {
-    @content;
-  }
-}
-
 @mixin cell-size {
-  width: 5rem;
-  height: 5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+
+  @include mobile-large {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  @include tablet {
+    width: 5rem;
+    height: 5rem;
+  }
 }
 
 @mixin input-style {
@@ -34,8 +44,8 @@
 }
 
 @mixin button-style {
-  height: 8rem;
-  width: 28rem;
+  height: 4rem;
+  width: 18rem;
   background-color: var(--bg-main);
   color: var(--color-text);
   border-radius: 10px;
@@ -44,4 +54,10 @@
   transition: width 0.3s ease-in-out;
   overflow: hidden;
   cursor: pointer;
+
+  @include tablet {
+    font-size: 3rem;
+    height: 8rem;
+    width: 28rem;
+  }
 }

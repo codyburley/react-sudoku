@@ -38,15 +38,21 @@
   }
 
   &__name {
-    height: 8rem;
-    width: 28rem;
+    height: 4rem;
+    width: 18rem;
     border-radius: 10px;
     outline: 0;
     background-color: var(--bg-main);
     padding: 2rem;
-    @include font-large;
+    @include font-medium;
     text-align: center;
     @include input-style;
+
+    @include tablet {
+      @include font-large;
+      height: 8rem;
+      width: 28rem;
+    }
 
     &--error {
       border-color: var(--red);
@@ -56,7 +62,7 @@
 
   &__button {
     @include button-style;
-    @include font-large;
+    font-size: 2rem;
 
     &--blue {
       background-color: var(--blue);
